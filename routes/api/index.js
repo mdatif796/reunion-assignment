@@ -6,6 +6,7 @@ const setAuthenticationMiddleware = require("../../config/setAuthenticationMiddl
 
 const userController = require("../../controllers/api/userController");
 const postController = require("../../controllers/api/postController");
+const likeController = require("../../controllers/api/likeController");
 
 // create user
 router.post("/create-user", userController.createUser);
@@ -54,6 +55,12 @@ router.post(
   "/like/:id",
   setAuthenticationMiddleware.checkAuthentication,
   likeController.likePost
+);
+// unlike post
+router.post(
+  "/unlike/:id",
+  setAuthenticationMiddleware.checkAuthentication,
+  likeController.unLikePost
 );
 
 module.exports = router;
