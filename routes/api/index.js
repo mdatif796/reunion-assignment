@@ -4,6 +4,7 @@ const router = express.Router();
 // middleware
 const setAuthenticationMiddleware = require("../../config/setAuthenticationMiddleware");
 
+// controllers
 const userController = require("../../controllers/api/userController");
 const postController = require("../../controllers/api/postController");
 const likeController = require("../../controllers/api/likeController");
