@@ -10,6 +10,8 @@ const postController = require("../../controllers/api/postController");
 const likeController = require("../../controllers/api/likeController");
 const commentController = require("../../controllers/api/commentController");
 
+router.get("/home", userController.home);
+
 // create user
 router.post("/create-user", userController.createUser);
 // authenticate user
