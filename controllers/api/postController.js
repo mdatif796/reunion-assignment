@@ -100,3 +100,39 @@ module.exports.getPost = async (req, res) => {
     });
   }
 };
+
+// get all post
+module.exports.getAllPost = async (req, res) => {
+  try {
+    // find all the post
+    let posts = await Post.find({
+      user: req.user._id,
+    })
+      .sort("-createdAt")
+      .populate("user", "email name")
+      .populate({
+        path: "comments",
+        populate: {
+          path: "user",
+          select: "email name",
+        },
+      })
+      .populate({
+        path: "likes",
+        populate: {
+          path: "user",
+          select: "email name",
+        },
+      });
+
+    return res.status(200).json({
+      success: true,
+      posts,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
