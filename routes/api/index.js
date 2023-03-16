@@ -49,4 +49,11 @@ router.get(
   postController.getPost
 );
 
+// like post
+router.post(
+  "/like/:id",
+  setAuthenticationMiddleware.checkAuthentication,
+  likeController.likePost
+);
+
 module.exports = router;

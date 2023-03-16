@@ -79,13 +79,15 @@ module.exports.getPost = async (req, res) => {
     }
 
     // populate the user, comment and user of comment
-    post = post.populate("user", "-password ").populate({
-      path: "comments",
-      populate: {
-        path: "user",
-        select: "-password",
-      },
-    });
+    post = await Post.findById(req.params.id)
+      .populate("user", "-password ")
+      .populate({
+        path: "comments",
+        populate: {
+          path: "user",
+          select: "-password",
+        },
+      });
 
     return res.status(200).json({
       success: true,
