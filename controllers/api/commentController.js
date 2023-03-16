@@ -25,7 +25,7 @@ module.exports.addComment = async (req, res) => {
     post.save();
     comment = await comment.populate("user", "name email");
 
-    return res.status(200).json({
+    return res.status(201).json({
       success: true,
       message: "comment added!!",
       comment_id: comment._id,

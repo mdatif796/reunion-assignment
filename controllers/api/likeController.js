@@ -36,7 +36,7 @@ module.exports.likePost = async (req, res) => {
     for (let user of postLikedUser) {
       // check like made by authenticated user
       if (user.user.email === req.user.email) {
-        return res.status(200).json({
+        return res.status(401).json({
           success: false,
           message: "Post liked already!!",
         });
@@ -50,7 +50,7 @@ module.exports.likePost = async (req, res) => {
 
     post.likes.push(like._id);
     await post.save();
-    return res.status(200).json({
+    return res.status(201).json({
       success: true,
       message: "Post liked!!",
     });
@@ -100,7 +100,7 @@ module.exports.unLikePost = async (req, res) => {
 
     // if deleting not happen
     if (!deleteLike) {
-      return res.status(200).json({
+      return res.status(401).json({
         success: false,
         message: "Like not exist!!",
       });
@@ -108,7 +108,7 @@ module.exports.unLikePost = async (req, res) => {
     // remove the like id from post likes array
     await post.likes.pull(deleteLike._id);
     await post.save();
-    return res.status(200).json({
+    return res.status(201).json({
       success: true,
       message: "Post unliked!!",
     });

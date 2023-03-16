@@ -109,7 +109,7 @@ module.exports.followUser = async (req, res) => {
     userToBeFollow.followers.push(req.user._id);
     await userToBeFollow.save();
 
-    return res.status(200).json({
+    return res.status(201).json({
       success: true,
       message: "user followed successfully",
     });
@@ -164,7 +164,7 @@ module.exports.unfollowUser = async (req, res) => {
     userToBeUnfollow.followers = userToBeFollow_followingUser;
     await userToBeUnfollow.save();
 
-    return res.status(200).json({
+    return res.status(201).json({
       success: true,
       message: "user Unfollowed successfully",
     });

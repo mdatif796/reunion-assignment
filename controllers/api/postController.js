@@ -9,7 +9,7 @@ module.exports.createPost = async (req, res) => {
       user: req.user._id,
     });
 
-    return res.status(200).json({
+    return res.status(201).json({
       success: true,
       message: "post created!!",
       post: {
