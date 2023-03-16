@@ -36,5 +36,11 @@ router.post(
   setAuthenticationMiddleware.checkAuthentication,
   postController.createPost
 );
+// delete post
+router.delete(
+  "/posts/:id",
+  setAuthenticationMiddleware.checkAuthentication,
+  postController.deletePost
+);
 
 module.exports = router;

@@ -26,3 +26,41 @@ module.exports.createPost = async (req, res) => {
     });
   }
 };
+
+// delete post
+module.exports.deletePost = async (req, res) => {
+  try {
+    // find the post to be deleted
+    let post = await Post.findById(req.params.id);
+    // if post not exist
+    if (!post) {
+      return res.status(401).json({
+        success: false,
+        message: "post not exist",
+      });
+    }
+
+    // populate the user
+    post = await post.populate("user");
+
+    // if the post doesn't created by the logged in user
+    if (post.user.email !== req.user.email) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized access",
+      });
+    }
+
+    // delete the post
+    await Post.findByIdAndDelete(req.params.id);
+    return res.status(200).json({
+      success: true,
+      message: "Post deleted!!",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
