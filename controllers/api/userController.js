@@ -90,8 +90,10 @@ module.exports.followUser = async (req, res) => {
       });
     }
 
+    // get the logged in user
     let authenticatedUser = await User.findById(req.user._id);
     let followingUser = authenticatedUser.following;
+    // check if the user to follow already exist the following list
     for (let userId of followingUser) {
       if (userId === req.params.id) {
         return res.status(401).json({
@@ -100,6 +102,7 @@ module.exports.followUser = async (req, res) => {
         });
       }
     }
+
     authenticatedUser.following.push(req.params.id);
     await authenticatedUser.save();
 
@@ -109,6 +112,61 @@ module.exports.followUser = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "user followed successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// unfollow user
+module.exports.unfollowUser = async (req, res) => {
+  try {
+    // check if both the user id same
+    if (req.user._id === req.params.id) {
+      return res.status(401).json({
+        success: false,
+        message: "user cannot Unfollow himself",
+      });
+    }
+
+    // find the user to unfollow
+    let userToBeUnfollow = await User.findById(req.params.id);
+    // if the user to unfollow doesn't exist
+    if (!userToBeUnfollow) {
+      return res.status(401).json({
+        success: false,
+        message: "user to unfollow does not exist!",
+      });
+    }
+
+    // get the logged in user
+    let authenticatedUser = await User.findById(req.user._id);
+    // get the following list of logged in user
+    let followingUser = authenticatedUser.following;
+    // remove the user from the list
+    followingUser = followingUser.filter((userId) => {
+      return userId !== req.params.id;
+    });
+    authenticatedUser.following = followingUser;
+    await authenticatedUser.save();
+
+    // get the follower list of the user to unfollow
+    let userToBeFollow_followingUser = userToBeUnfollow.followers;
+    // remove the logged in user from his follower's list
+    userToBeFollow_followingUser = userToBeFollow_followingUser.filter(
+      (user) => {
+        return user !== req.user._id;
+      }
+    );
+    userToBeUnfollow.followers = userToBeFollow_followingUser;
+    await userToBeUnfollow.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "user Unfollowed successfully",
     });
   } catch (error) {
     return res.status(500).json({

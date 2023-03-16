@@ -15,5 +15,11 @@ router.post(
   setAuthenticationMiddleware.checkAuthentication,
   userController.followUser
 );
+// unfollow user
+router.post(
+  "/unfollow/:id",
+  setAuthenticationMiddleware.checkAuthentication,
+  userController.unfollowUser
+);
 
 module.exports = router;
