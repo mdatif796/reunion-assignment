@@ -175,3 +175,22 @@ module.exports.unfollowUser = async (req, res) => {
     });
   }
 };
+
+// get authenticated user
+module.exports.getAuthenticatedUser = async (req, res) => {
+  try {
+    return res.status(200).json({
+      success: true,
+      user: {
+        name: req.user.name,
+        followers: req.user.followers.length,
+        following: req.user.following.length,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};

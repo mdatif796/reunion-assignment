@@ -21,5 +21,11 @@ router.post(
   setAuthenticationMiddleware.checkAuthentication,
   userController.unfollowUser
 );
+// get authenticated user
+router.get(
+  "/user",
+  setAuthenticationMiddleware.checkAuthentication,
+  userController.getAuthenticatedUser
+);
 
 module.exports = router;
