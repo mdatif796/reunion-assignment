@@ -5,6 +5,8 @@ const PORT = process.env.PORT || 8000;
 // setting up mongodb
 const db = require("./config/databaseConnection");
 
+app.use("/", require("./routes"));
+
 app.listen(PORT, (err) => {
   if (err) {
     console.log("error in connecting with express server ", err);
