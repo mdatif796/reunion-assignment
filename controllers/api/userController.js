@@ -68,3 +68,52 @@ module.exports.authenticateUser = async (req, res) => {
     });
   }
 };
+
+// follow user
+module.exports.followUser = async (req, res) => {
+  try {
+    // check if both user id same
+    if (req.user._id === req.params.id) {
+      return res.status(401).json({
+        success: false,
+        message: "user cannot follow himself",
+      });
+    }
+
+    // find user to follow
+    let userToBeFollow = await User.findById(req.params.id);
+    // if user not found
+    if (!userToBeFollow) {
+      return res.status(401).json({
+        success: false,
+        message: "user not exist",
+      });
+    }
+
+    let authenticatedUser = await User.findById(req.user._id);
+    let followingUser = authenticatedUser.following;
+    for (let userId of followingUser) {
+      if (userId === req.params.id) {
+        return res.status(401).json({
+          success: false,
+          message: "user already followed",
+        });
+      }
+    }
+    authenticatedUser.following.push(req.params.id);
+    await authenticatedUser.save();
+
+    userToBeFollow.followers.push(req.user._id);
+    await userToBeFollow.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "user followed successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
