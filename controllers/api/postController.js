@@ -64,3 +64,37 @@ module.exports.deletePost = async (req, res) => {
     });
   }
 };
+
+// get post
+module.exports.getPost = async (req, res) => {
+  try {
+    // find the post
+    let post = await Post.findById(req.params.id);
+    // if post not exist
+    if (!post) {
+      return res.status(401).json({
+        success: false,
+        message: "post not exist",
+      });
+    }
+
+    // populate the user, comment and user of comment
+    post = post.populate("user", "-password ").populate({
+      path: "comments",
+      populate: {
+        path: "user",
+        select: "-password",
+      },
+    });
+
+    return res.status(200).json({
+      success: true,
+      post,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};

@@ -42,5 +42,11 @@ router.delete(
   setAuthenticationMiddleware.checkAuthentication,
   postController.deletePost
 );
+// get post
+router.get(
+  "/posts/:id",
+  setAuthenticationMiddleware.checkAuthentication,
+  postController.getPost
+);
 
 module.exports = router;
