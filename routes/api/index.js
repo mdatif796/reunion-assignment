@@ -5,6 +5,8 @@ const router = express.Router();
 const setAuthenticationMiddleware = require("../../config/setAuthenticationMiddleware");
 
 const userController = require("../../controllers/api/userController");
+const postController = require("../../controllers/api/postController");
+
 // create user
 router.post("/create-user", userController.createUser);
 // authenticate user
@@ -26,6 +28,13 @@ router.get(
   "/user",
   setAuthenticationMiddleware.checkAuthentication,
   userController.getAuthenticatedUser
+);
+
+// create post by authenticated user
+router.post(
+  "/posts",
+  setAuthenticationMiddleware.checkAuthentication,
+  postController.createPost
 );
 
 module.exports = router;
