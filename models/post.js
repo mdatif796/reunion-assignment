@@ -10,6 +10,11 @@ const postSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    user: {
+      // connecting with the user schema
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
   {
     timestamps: true,
