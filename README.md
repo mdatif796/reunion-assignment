@@ -15,3 +15,13 @@
 
 - make sure to first start the server with "npm start" command
 - and then type "npx mocha .\test\api_testcases.js" command
+
+# steps to run docker file (make sure you are on root folder)
+
+- first build images using this command
+
+* docker build -t reunion-assignment .
+
+- then run the container with this command
+
+* docker run --name reunion-assignment -p 80:8080 -d reunion-assignment
